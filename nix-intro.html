@@ -79,7 +79,37 @@ error: file 'mew' was not found in the Nix search path (add it using $NIX_PATH o
        at «string»:1:1:
 
             1| <mew>
-             | ^</code></pre></p>
+             | ^</code></pre>
+<p>Let's try and build python derivation:</p>
+<pre><code class="language-nix">nix-repl> :b python310
+This derivation produced the following outputs:
+  out -> /nix/store/m4kmky8ay96qwyakxjmj1idcvrdmvb9k-python3-3.10.12</code></pre>
+<p>We can verify the built derivation by accessing the python shell after *exiting the <code>nix repl</code>:</p>
+<pre><code class="language-bash">❯ /nix/store/m4kmky8ay96qwyakxjmj1idcvrdmvb9k-python3-3.10.12/bin/python
+Python 3.10.12 (main, Aug 31 2023, 13:04:33) [Clang 11.1.0 ] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>></code></pre><pre><code class="language-nix">nix-repl> :b python311.withPackages(p: [p.requests])
+
+This derivation produced the following outputs:
+  out -> /nix/store/bl65mjkcchgamgqw1zw9ns46p4gpi1wh-python3-3.11.4-env
+
+# exit nix repl
+❯ /nix/store/bl65mjkcchgamgqw1zw9ns46p4gpi1wh-python3-3.11.4-env/bin/python
+Python 3.11.4 (main, Aug 31 2023, 13:04:34) [Clang 11.1.0 ] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import requests
+>>></code></pre>
+<p>Nix Closure is the Nix's package dependency tree. It includes all the packages required to build and run the package.</p>
+<p>Channels
+A channel is a git repository containing a list of packages.</p>
+<pre><code class="language-nix">❯ nix-channel --list
+darwin https://github.com/LnL7/nix-darwin/archive/master.tar.gz
+nixpkgs https://github.com/NixOS/nixpkgs/archive/staging-next.tar.gz</code></pre>
+<p>Profiles
+Profiles are groups of generations so that different users don’t interfere with each other if they don’t want to. Profiles and User Environments are Nix’s mechanisms to allow different users to use different configurations.</p>
+<p>Derivation
+A Derivation is a Nix expression describing everything that goes into a package build action (build tools, dependencies, sources, build scripts, environment variables). It is anything needed to build up a package</p>
+</p>
         </main>
 
         <!-- Footer -->
